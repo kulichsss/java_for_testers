@@ -1,9 +1,9 @@
 package ru.stqa.math;
 
 public class Triangle {
-    private double a;
-    private double b;
-    private double c;
+    private static double a;
+    private static double b;
+    private static double c;
 
     public Triangle(double a, double b, double c){
         this.a = a;
@@ -11,16 +11,12 @@ public class Triangle {
         this.c = c;
     }
 
-    public static double perimeter(double a, double b, double c) {
+    public static double perimeter() {
         return a + b + c;
     }
 
-    public static double square(double a, double b, double c) {
-        double p = perimeter(a, b, c) / 2;
+    public static double square() {
+        double p = perimeter() / 2;
         return Math.sqrt(p * (p - a) * (p - b) * (p - c));
-    }
-
-    public static void main(String[] args) {
-        System.out.println(square(3,4,5));
     }
 }

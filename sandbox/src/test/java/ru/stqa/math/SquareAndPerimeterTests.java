@@ -4,15 +4,15 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class SquareAndPerimeterTests {
-
+    Triangle exampleTriangle = new Triangle(3, 4, 5);
     @Test
     void canCalculatePerimeter() {
-        var result = Triangle.perimeter(3, 4, 5);
+        var result = exampleTriangle.perimeter();
         Assertions.assertEquals(12, result);
     }
     @Test
     void canCalculateSquare() {
-        var result = Triangle.square(3, 4, 5);
+        var result = exampleTriangle.square();
         Assertions.assertEquals(6, result);
     }
 }
