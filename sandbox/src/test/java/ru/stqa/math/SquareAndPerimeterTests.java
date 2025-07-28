@@ -61,4 +61,9 @@ public class SquareAndPerimeterTests {
             System.out.println("The sum of the two sides should not exceed side C");
         }
     }
+
+    @Test
+    void testEquals() {
+        Assertions.assertEquals(new Triangle(3, 4, 5), new Triangle(4, 5, 3));
+    }
 }
