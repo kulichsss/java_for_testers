@@ -8,8 +8,7 @@ public class GroupCreationTest extends TestBase{
 
     @Test
     public void canCreateGroup() {
-        app.openGroupPage();
-        app.createGroup(new GroupData("Name1", "Logo header", "Comment footer"));
+        app.groups().createGroup(new GroupData().withName("some name"));
     }
 
 

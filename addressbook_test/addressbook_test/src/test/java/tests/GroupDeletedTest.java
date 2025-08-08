@@ -8,11 +8,10 @@ public class GroupDeletedTest extends TestBase {
 
     @Test
     public void canDeletedGroup() {
-        app.openGroupPage();
-        if (!app.isGroupPresent()) {
-            app.createGroup(new GroupData("Name1", "Logo header", "Comment footer"));
+        if (!app.groups().isGroupPresent()) {
+            app.groups().createGroup(new GroupData("Name1", "Logo header", "Comment footer"));
         }
-        app.deleteGroup();
+        app.groups().deleteGroup();
     }
 
 }
