@@ -46,7 +46,6 @@ public class ContactHelper extends HelperBase {
         type(By.name("mobile"), contact.mobile());
         click(By.xpath("(//input[@name=\'submit\'])[2]"));
         click(By.linkText("home page"));
-        click(By.linkText("Logout"));
     }
 
 }
