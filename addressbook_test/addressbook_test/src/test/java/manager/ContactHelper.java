@@ -2,6 +2,7 @@ package manager;
 
 import model.ContactData;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoAlertPresentException;
 
 public class ContactHelper extends HelperBase {
 
@@ -11,9 +12,25 @@ public class ContactHelper extends HelperBase {
 
     public void deletedContact() {
         openHomePage();
+        click(By.name("selected[]"));
         click(By.xpath("//input[@value=\'Delete\']"));
-        manager.driver.switchTo().alert().accept();
+        findAlert();
         click(By.linkText("home"));
+    }
+
+    public void deletedAllContacts() {
+        openHomePage();
+        selectAllContacts();
+        click(By.xpath("//input[@value=\'Delete\']"));
+        findAlert();
+        click(By.linkText("home"));
+    }
+
+    public void selectAllContacts() {
+        var checkboxes = manager.driver.findElements(By.name("selected[]"));
+        for (var checkbox: checkboxes) {
+            checkbox.click();
+        }
     }
 
     public void openContactPage() {
@@ -28,14 +45,6 @@ public class ContactHelper extends HelperBase {
         }
     }
 
-    public boolean isContactPresent() {
-        if (!manager.isElementPresent(By.name("new"))) {
-            click(By.linkText("home"));
-        }
-        return manager.isElementPresent(By.name("selected[]"));
-    }
-
-
     public void createContact(ContactData contact) {
         openContactPage();
         type(By.name("firstname"), contact.firstname());
@@ -48,4 +57,17 @@ public class ContactHelper extends HelperBase {
         click(By.linkText("home page"));
     }
 
+    public int countContacts() {
+        openHomePage();
+        return manager.driver.findElements(By.name("selected[]")).size();
+    }
+
+    public void findAlert() {
+        try {
+            manager.driver.switchTo().alert().accept();
+            System.out.println("Алерт принят.");
+        } catch (NoAlertPresentException e) {
+            System.out.println("Алерта не было — всё нормально, продолжаем.");
+        }
+    }
 }
