@@ -13,7 +13,7 @@ public class ContactDeletedTest extends TestBase {
     @Test
     public void canDeletedContact() {
         if (app.contacts().countContacts() == 0) {
-            app.contacts().createContact(new ContactData().withRequiredFields("Danila1", "Usupov1", "Andreevich", "г. Санкт-Петербург, ул. Колотушкина д .7а", "dan@yandex.ru", "89994442525"));
+            app.contacts().createContact(new ContactData().withRequiredFields("Danila1", "Usupov1", "Andreevich"));
         }
         var contactStart = app.contacts().countContacts();
         app.contacts().deletedContact(null);
@@ -24,7 +24,7 @@ public class ContactDeletedTest extends TestBase {
     @Test
     public void canDeletedAllContacts() {
         if (app.contacts().countContacts() == 0) {
-            app.contacts().createContact(new ContactData().withRequiredFields("Danila1", "Usupov1", "Andreevich", "г. Санкт-Петербург, ул. Колотушкина д .7а", "dan@yandex.ru", "89994442525"));
+            app.contacts().createContact(new ContactData().withRequiredFields("Danila1", "Usupov1", "Andreevich"));
         }
         app.contacts().deletedAllContacts();
         var contactFinish = app.contacts().countContacts();
@@ -34,7 +34,7 @@ public class ContactDeletedTest extends TestBase {
     @Test
     public void canDeletedContactById() {
         if (app.contacts().countContacts() == 0) {
-            app.contacts().createContact(new ContactData().withRequiredFields("Danila1", "Usupov1", "Andreevich", "г. Санкт-Петербург, ул. Колотушкина д .7а", "dan@yandex.ru", "89994442525"));
+            app.contacts().createContact(new ContactData().withRequiredFields("Danila1", "Usupov1", "Andreevich"));
         }
         var contactOld = app.contacts().getList();
         var rnd = new Random();

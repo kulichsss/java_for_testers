@@ -6,7 +6,7 @@ public record ContactData(String id, String firstname, String middlename, String
         this("", "", "", "");
     }
 
-    public ContactData withRequiredFields(String firstname, String middlename, String lastname, String address, String email, String mobile) {
+    public ContactData withRequiredFields(String firstname, String middlename, String lastname) {
         return new ContactData(this.id, firstname, middlename, lastname);
     }
 

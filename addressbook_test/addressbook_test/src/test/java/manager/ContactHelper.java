@@ -80,10 +80,12 @@ public class ContactHelper extends HelperBase {
             var checkbox = td.findElement(By.name("selected[]"));
             var id = checkbox.getAttribute("value");
             var columns = td.findElements(By.tagName("td"));
-            var name = columns.get(2).getText();
-            var lastName = columns.get(1).getText();
-            var middleName = columns.get(3).getText();
+            click(By.xpath("//a[@href='edit.php?id=" + id + "']"));
+            var name = manager.driver.findElement(By.name("firstname")).getAttribute("value");
+            var lastName = manager.driver.findElement(By.name("lastname")).getAttribute("value");
+            var middleName = manager.driver.findElement(By.name("middlename")).getAttribute("value");
             contact.add(new ContactData().withId(id).withName(name).withMiddlename(middleName).withLastname(lastName));
+            openHomePage();
         }
         return contact;
     }
