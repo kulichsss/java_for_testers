@@ -87,4 +87,14 @@ public class ContactHelper extends HelperBase {
         }
         return contact;
     }
+
+    public void modifyContact(ContactData contact, ContactData testData) {
+        openHomePage();
+        click(By.xpath("//a[@href='edit.php?id=" + contact.id() + "']"));
+        manager.driver.findElement(By.name("firstname")).clear();
+        type(By.name("firstname"), testData.firstname());
+        click(By.xpath("(//input[@name='update'])[2]"));
+        click(By.linkText("home page"));
+    }
+
 }
