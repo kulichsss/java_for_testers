@@ -1,8 +1,12 @@
 package manager;
 
 import model.ContactData;
+import model.GroupData;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoAlertPresentException;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ContactHelper extends HelperBase {
 
@@ -10,9 +14,9 @@ public class ContactHelper extends HelperBase {
         super(manager);
     }
 
-    public void deletedContact() {
+    public void deletedContact(ContactData contact) {
         openHomePage();
-        click(By.name("selected[]"));
+        click(By.cssSelector(String.format("input[value='%s']", contact.id())));
         click(By.xpath("//input[@value=\'Delete\']"));
         findAlert();
         click(By.linkText("home"));
@@ -50,9 +54,6 @@ public class ContactHelper extends HelperBase {
         type(By.name("firstname"), contact.firstname());
         type(By.name("middlename"), contact.middlename());
         type(By.name("lastname"), contact.lastname());
-        type(By.name("address"), contact.address());
-        type(By.name("email"), contact.email());
-        type(By.name("mobile"), contact.mobile());
         click(By.xpath("(//input[@name=\'submit\'])[2]"));
         click(By.linkText("home page"));
     }
@@ -69,5 +70,21 @@ public class ContactHelper extends HelperBase {
         } catch (NoAlertPresentException e) {
             System.out.println("Алерта не было — всё нормально, продолжаем.");
         }
+    }
+
+    public List<ContactData> getList() {
+        openHomePage();
+        var contact = new ArrayList<ContactData>();
+        var tds = manager.driver.findElements(By.cssSelector("tr[name='entry']"));
+        for (var td: tds) {
+            var checkbox = td.findElement(By.name("selected[]"));
+            var id = checkbox.getAttribute("value");
+            var columns = td.findElements(By.tagName("td"));
+            var name = columns.get(2).getText();
+            var lastName = columns.get(1).getText();
+            var middleName = columns.get(3).getText();
+            contact.add(new ContactData().withId(id).withName(name).withMiddlename(middleName).withLastname(lastName));
+        }
+        return contact;
     }
 }
