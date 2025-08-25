@@ -1,6 +1,7 @@
 package tests;
 
 
+import common.CommonFunction;
 import model.ContactData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -15,10 +16,10 @@ public class ContactCreationTest extends TestBase {
 
   public static List<ContactData> contactProvider() {
     var listContacts = new ArrayList<ContactData>();
-    for (var name: List.of("", randomString(4))) {
-      for (var middlename: List.of("", randomString(6))) {
-        for (var lastname: List.of("", randomString(5))) {
-          listContacts.add(new ContactData("", name, middlename, lastname));
+    for (var name: List.of("", CommonFunction.randomString(4))) {
+      for (var middlename: List.of("", CommonFunction.randomString(6))) {
+        for (var lastname: List.of("", CommonFunction.randomString(5))) {
+          listContacts.add(new ContactData("", name, middlename, lastname, ""));
             }
           }
         }
@@ -27,14 +28,18 @@ public class ContactCreationTest extends TestBase {
 
   public static List<ContactData> negativeContact() {
     var listContacts = new ArrayList<ContactData>(List.of(
-            new ContactData("", "Danila1'", "", "")
+            new ContactData("", "Danila1'", "", "", "")
     ));
     return listContacts;
   }
 
   @Test
   public void canCreateContact() {
-    app.contacts().createContact(new ContactData().withRequiredFields("Danila1", "Usupov1", "Andreevich"));
+    app.contacts().createContact(new ContactData()
+            .withLastname("Usupov1")
+            .withName("Danila1")
+            .withMiddlename("Andreevich")
+            .withPhoto(randomFile("src/test/resources/images")));
   }
 
   @ParameterizedTest
@@ -64,6 +69,7 @@ public class ContactCreationTest extends TestBase {
     var contactFinish = app.contacts().getList();
     Assertions.assertEquals(contactFinish, contactStart);
   }
+
 
 
 }

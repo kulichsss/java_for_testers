@@ -3,6 +3,8 @@ package tests;
 import manager.ApplicationManager;
 import org.junit.jupiter.api.BeforeEach;
 
+import java.io.File;
+import java.nio.file.Paths;
 import java.util.Random;
 
 public class TestBase {
@@ -17,13 +19,11 @@ public class TestBase {
         app.init(System.getProperty("browser", "firefox"));
     }
 
-    public static String randomString(int n) {
+    public static String randomFile(String dir) {
+        var randomFile = new File(dir).list();
         var rnd = new Random();
-        var result = "";
-        for (int i = 1; i < n; i++) {
-            result = result + (char) ('a' + rnd.nextInt(26));
-        }
-        return result;
+        var index = rnd.nextInt(randomFile != null ? randomFile.length : null);
+        return Paths.get(dir, randomFile[index]).toString();
     }
 
 }
