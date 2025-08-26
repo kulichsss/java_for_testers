@@ -4,13 +4,17 @@ import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import common.CommonFunction;
+import model.ContactData;
 import model.GroupData;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+
+import static tests.TestBase.randomFile;
 
 public class Generator {
 
@@ -51,7 +55,11 @@ public class Generator {
     }
 
     private Object generateContacts() {
-        return null;
+        var result = new ArrayList<ContactData>();
+        for (int i = 0; i < count; i++) {
+            result.add(new ContactData("", CommonFunction.randomString(4), "", CommonFunction.randomString(6), ""));
+        }
+        return result;
     }
 
     private Object generateGroups() {
@@ -70,6 +78,10 @@ public class Generator {
             try (var writer = new FileWriter(output)) {
                 writer.write(json);
             }
+        }
+        else if ("xml".equals(format)) {
+            var mapper = new XmlMapper();
+            mapper.writeValue(new File(output), data);
         }
         else
             throw new IllegalArgumentException("Неверный формат данных " + format);

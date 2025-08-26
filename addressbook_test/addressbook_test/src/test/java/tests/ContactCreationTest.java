@@ -1,28 +1,36 @@
 package tests;
 
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import common.CommonFunction;
 import model.ContactData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.xml.sax.XMLReader;
 
+import javax.sql.rowset.spi.XmlReader;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
 public class ContactCreationTest extends TestBase {
 
-  public static List<ContactData> contactProvider() {
+  public static List<ContactData> contactProvider() throws IOException {
     var listContacts = new ArrayList<ContactData>();
     for (var name: List.of("", CommonFunction.randomString(4))) {
-      for (var middlename: List.of("", CommonFunction.randomString(6))) {
         for (var lastname: List.of("", CommonFunction.randomString(5))) {
-          listContacts.add(new ContactData("", name, middlename, lastname, ""));
+          listContacts.add(new ContactData("", name, "", lastname, ""));
             }
           }
-        }
+
+    XmlMapper mapper = new XmlMapper();
+    var reader = mapper.readValue(new File("contacts.xml"), new TypeReference<List<ContactData>>() {});
+    listContacts.addAll(reader);
     return listContacts;
   }
 
@@ -55,7 +63,6 @@ public class ContactCreationTest extends TestBase {
     var expectedList = new ArrayList<>(contactStart);
     expectedList.add(contact.withId(contactFinish.get(contactFinish.size() - 1).id())
             .withName(contactFinish.get(contactFinish.size() - 1).firstname())
-            .withMiddlename(contactFinish.get(contactFinish.size() - 1).middlename())
             .withLastname(contactFinish.get(contactFinish.size() - 1).lastname()));
     expectedList.sort(compareById);
     Assertions.assertEquals(expectedList, contactFinish);

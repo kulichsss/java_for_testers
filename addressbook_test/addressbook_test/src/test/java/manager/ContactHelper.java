@@ -52,9 +52,10 @@ public class ContactHelper extends HelperBase {
     public void createContact(ContactData contact) {
         openContactPage();
         type(By.name("firstname"), contact.firstname());
-        type(By.name("middlename"), contact.middlename());
+        //type(By.name("middlename"), contact.middlename());
         type(By.name("lastname"), contact.lastname());
-        attach(By.name("photo"), contact.photo());
+        if (!contact.photo().equals(""))
+                attach(By.name("photo"), contact.photo());
         click(By.xpath("(//input[@name=\'submit\'])[2]"));
         click(By.linkText("home page"));
     }
@@ -80,13 +81,14 @@ public class ContactHelper extends HelperBase {
         for (var td: tds) {
             var checkbox = td.findElement(By.name("selected[]"));
             var id = checkbox.getAttribute("value");
-            var columns = td.findElements(By.tagName("td"));
-            click(By.xpath("//a[@href='edit.php?id=" + id + "']"));
-            var name = manager.driver.findElement(By.name("firstname")).getAttribute("value");
-            var lastName = manager.driver.findElement(By.name("lastname")).getAttribute("value");
-            var middleName = manager.driver.findElement(By.name("middlename")).getAttribute("value");
-            contact.add(new ContactData().withId(id).withName(name).withMiddlename(middleName).withLastname(lastName));
-            openHomePage();
+            var column = td.findElements(By.tagName("td"));
+            var name = column.get(1).getText().trim();
+            var lastname = column.get(2).getText().trim();
+//            click(By.xpath("//a[@href='edit.php?id=" + id + "']"));
+//            var name = manager.driver.findElement(By.name("firstname")).getAttribute("value");
+//            var lastName = manager.driver.findElement(By.name("lastname")).getAttribute("value");
+            contact.add(new ContactData().withId(id).withName(name).withMiddlename("").withLastname(lastname).withPhoto(""));
+            //openHomePage();
         }
         return contact;
     }
