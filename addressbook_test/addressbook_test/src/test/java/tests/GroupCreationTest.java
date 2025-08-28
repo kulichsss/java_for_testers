@@ -2,6 +2,7 @@ package tests;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import common.CommonFunction;
 import model.GroupData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -42,6 +43,12 @@ public class GroupCreationTest extends TestBase{
 
     }
 
+    public static List<GroupData> groupJdbcProvider() {
+        var result = new ArrayList<GroupData>(List.of(
+                new GroupData().withName(CommonFunction.randomString(5))));
+        return result;
+    }
+
     @Test
     public void canCreateGroup() {
         var groupCount = app.groups().countGroups();
@@ -74,6 +81,24 @@ public class GroupCreationTest extends TestBase{
         app.groups().createGroup(group);
         var newGroupCount = app.groups().getList();
         Assertions.assertEquals(newGroupCount, groupCount);
+
+    }
+
+    @ParameterizedTest
+    @MethodSource("groupJdbcProvider")
+    public void canCreateGroupsByJdbc(GroupData group) {
+        var groupList = app.jdbc().getGroupsList();
+        app.groups().createGroup(group);
+        var newGroupList = app.jdbc().getGroupsList();
+        Comparator<GroupData> compareById = (o1, o2) -> {
+            return Integer.compare(Integer.parseInt(o1.id()), Integer.parseInt(o2.id()));
+        };
+        newGroupList.sort(compareById);
+        var lastValue = newGroupList.get(newGroupList.size() - 1).id();
+        var expectedList = new ArrayList<>(groupList);
+        expectedList.add(group.withId(lastValue));
+        expectedList.sort(compareById);
+        Assertions.assertEquals(newGroupList, expectedList);
 
     }
 
