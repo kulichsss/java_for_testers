@@ -24,24 +24,24 @@ public class GroupDeletedTest extends TestBase {
 
     @Test
     public void canDeletedAllGroups() {
-        if (app.groups().countGroups() == 0) {
-            app.groups().createGroup(new GroupData("", "Name1", "Logo header", "Comment footer"));
+        if (app.hbm().getCountGroups() == 0) {
+            app.hbm().createGroup(new GroupData("", "Name1", "Logo header", "Comment footer"));
         }
         app.groups().deletedAllGroups();
-        Assertions.assertEquals(0, app.groups().countGroups());
+        Assertions.assertEquals(0, app.hbm().getCountGroups());
     }
 
     @Test
     public void canDeletedGroupByList() {
 
-        if (app.groups().countGroups() == 0) {
-            app.groups().createGroup(new GroupData("", "Name1", "Logo header", "Comment footer"));
+        if (app.hbm().getCountGroups() == 0) {
+            app.hbm().createGroup(new GroupData("", "Name1", "Logo header", "Comment footer"));
         }
-        var groupDataList = app.groups().getList();
+        var groupDataList = app.hbm().getGroupsList();
         var rnd = new Random();
         var index = rnd.nextInt(groupDataList.size());
         app.groups().deleteGroup(groupDataList.get(index));
-        var newGroup = app.groups().getList();
+        var newGroup = app.hbm().getGroupsList();
         var expectedList = new ArrayList<>(groupDataList);
         expectedList.remove(index);
         Assertions.assertEquals(newGroup, expectedList);

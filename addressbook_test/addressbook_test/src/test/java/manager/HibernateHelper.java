@@ -43,6 +43,18 @@ public class HibernateHelper extends HelperBase {
         return result;
     }
 
+    public GroupData convert(GroupRecord record) {
+        return new GroupData("" + record.id, record.name, record.header, record.footer);
+    }
+
+    public GroupRecord convert(GroupData data) {
+        var id = data.id();
+        if ("".equals(id)) {
+            id = "0";
+        }
+        return new GroupRecord(Integer.parseInt(id), data.name(), data.header(), data.footer());
+    }
+
     public List<GroupData> getGroupsList() {
         Session session = sessionFactory.openSession();
         try {
@@ -57,5 +69,24 @@ public class HibernateHelper extends HelperBase {
         if (sessionFactory != null && !sessionFactory.isClosed()) {
             sessionFactory.close();
         }
+    }
+
+    public long getCountGroups() {
+        Session session = sessionFactory.openSession();
+        try {
+            TypedQuery<Long> query = session.createQuery("SELECT COUNT (*) FROM GroupRecord", Long.class);
+            return query.getSingleResult();
+        } finally {
+            session.close();
+        }
+    }
+
+
+    public void createGroup(GroupData groupData) {
+        sessionFactory.inSession(session -> {
+            session.getTransaction().begin();
+            session.persist(convert(groupData));
+            session.getTransaction().commit();
+        });
     }
 }
