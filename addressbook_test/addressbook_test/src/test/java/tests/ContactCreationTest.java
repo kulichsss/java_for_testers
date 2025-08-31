@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import common.CommonFunction;
 import model.ContactData;
+import model.GroupData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -77,6 +78,32 @@ public class ContactCreationTest extends TestBase {
     Assertions.assertEquals(contactFinish, contactStart);
   }
 
+  @Test
+  public void canCreateContactInGroup() {
+    var contact = new ContactData()
+            .withLastname("Usupov1")
+            .withName("Danila1")
+            .withMiddlename("Andreevich")
+            .withPhoto(randomFile("src/test/resources/images"));
+    if (app.hbm().getCountGroups() == 0) {
+      app.hbm().createGroup(new GroupData("", "Name1", "Logo header", "Comment footer"));
+    }
 
-
+    var group = app.hbm().getGroupsList().get(0);
+    var oldRelated = app.hbm().getContactsListInGroup(group);
+    app.contacts().createContactInGroup(contact, group);
+    var newRelated = app.hbm().getContactsListInGroup(group);
+    Comparator<ContactData> compareById = (o1, o2) -> {
+      return Integer.compare(Integer.parseInt(o1.id()), Integer.parseInt(o2.id()));
+    };
+    newRelated.sort(compareById);
+    var expectedList = new ArrayList<>(oldRelated);
+    expectedList.add(contact.withId(newRelated.get(newRelated.size() - 1).id())
+            .withName(newRelated.get(newRelated.size() - 1).firstname())
+            .withMiddlename(newRelated.get(newRelated.size() - 1).middlename())
+            .withLastname(newRelated.get(newRelated.size() - 1).lastname())
+            .withPhoto(newRelated.get(newRelated.size() - 1).photo()));
+    expectedList.sort(compareById);
+    Assertions.assertEquals(expectedList, newRelated);
+  }
 }

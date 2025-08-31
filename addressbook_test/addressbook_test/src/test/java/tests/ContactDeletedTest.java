@@ -34,13 +34,36 @@ public class ContactDeletedTest extends TestBase {
     @Test
     public void canDeletedContactById() {
         if (app.contacts().countContacts() == 0) {
-            app.contacts().createContact(new ContactData().withRequiredFields("Danila1", "Usupov1", "Andreevich"));
+            app.contacts().createContact(new ContactData()
+                    .withLastname("Usupov1")
+                    .withName("Danila1")
+                    .withMiddlename("Andreevich")
+                    .withPhoto(randomFile("src/test/resources/images")));
         }
         var contactOld = app.contacts().getList();
         var rnd = new Random();
         var index = rnd.nextInt(contactOld.size());
         app.contacts().deletedContact(contactOld.get(index));
         var contactNew= app.contacts().getList();
+        var expectedList = new ArrayList<>(contactOld);
+        expectedList.remove(index);
+        Assertions.assertEquals(expectedList, contactNew);
+    }
+
+    @Test
+    public void canDeletedContactByHbm() {
+        if (app.hbm().getCountContacts() == 0) {
+            app.hbm().createContact(new ContactData()
+                    .withLastname("Usupov1")
+                    .withName("Danila1")
+                    .withMiddlename("Andreevich")
+                    .withPhoto(randomFile("src/test/resources/images")));
+        }
+        var contactOld = app.hbm().getContactsList();
+        var rnd = new Random();
+        var index = rnd.nextInt(contactOld.size());
+        app.contacts().deletedContact(contactOld.get(index));
+        var contactNew= app.hbm().getContactsList();
         var expectedList = new ArrayList<>(contactOld);
         expectedList.remove(index);
         Assertions.assertEquals(expectedList, contactNew);

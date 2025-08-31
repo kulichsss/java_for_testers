@@ -4,6 +4,7 @@ import model.ContactData;
 import model.GroupData;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoAlertPresentException;
+import org.openqa.selenium.support.ui.Select;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -100,6 +101,22 @@ public class ContactHelper extends HelperBase {
         type(By.name("firstname"), testData.firstname());
         click(By.xpath("(//input[@name='update'])[2]"));
         click(By.linkText("home page"));
+    }
+
+    public void createContactInGroup(ContactData contact, GroupData group) {
+        openContactPage();
+        type(By.name("firstname"), contact.firstname());
+        //type(By.name("middlename"), contact.middlename());
+        type(By.name("lastname"), contact.lastname());
+        if (!contact.photo().equals(""))
+            attach(By.name("photo"), contact.photo());
+        selectGroup(group);
+        click(By.xpath("(//input[@name=\'submit\'])[2]"));
+        click(By.linkText("home page"));
+    }
+
+    private void selectGroup(GroupData group) {
+        new Select(manager.driver.findElement(By.name("new_group"))).selectByValue(group.id());
     }
 
 }
