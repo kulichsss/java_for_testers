@@ -12,22 +12,29 @@ public class GroupHelper  extends HelperBase {
         super(manager);
     }
 
+    // Переход на стартовые страницы
     public void openGroupPage() {
         if (!manager.isElementPresent(By.name("new"))) {
             click(By.linkText("groups"));
         }
     }
 
-    public void modifyGroup(GroupData group, GroupData modifyName) {
+
+
+    // Создание групп
+    public void createGroup(GroupData group) {
         openGroupPage();
-        click(By.cssSelector(String.format("input[value='%s']", group.id())));
-        click(By.name("edit"));
-        clearField();
-        type(By.name("group_name"), modifyName.name());
-        click(By.name("update"));
+        click(By.name("new"));
+        type(By.name("group_name"), group.name());
+        type(By.name("group_header"), group.header());
+        type(By.name("group_footer"), group.footer());
+        click(By.name("submit"));
         click(By.linkText("group page"));
     }
 
+
+
+    //Удаление групп
     public void deleteGroup(GroupData group) {
         openGroupPage();
         click(By.cssSelector(String.format("input[value='%s']", group.id())));
@@ -41,16 +48,21 @@ public class GroupHelper  extends HelperBase {
     }
 
 
-    public void createGroup(GroupData group) {
+
+    //Модификация групп
+    public void modifyGroup(GroupData group, GroupData modifyName) {
         openGroupPage();
-        click(By.name("new"));
-        type(By.name("group_name"), group.name());
-        type(By.name("group_header"), group.header());
-        type(By.name("group_footer"), group.footer());
-        click(By.name("submit"));
+        click(By.cssSelector(String.format("input[value='%s']", group.id())));
+        click(By.name("edit"));
+        clearField();
+        type(By.name("group_name"), modifyName.name());
+        click(By.name("update"));
         click(By.linkText("group page"));
     }
 
+
+
+    // Количество и список групп
     public List<GroupData> getList() {
         openGroupPage();
         var group = new ArrayList<GroupData>();
@@ -70,6 +82,8 @@ public class GroupHelper  extends HelperBase {
     }
 
 
+
+    //Вспомогательные методы
     private void selectAllGroups() {
         var checkboxes = manager.driver.findElements(By.name("selected[]"));
         for (var checkbox: checkboxes) {

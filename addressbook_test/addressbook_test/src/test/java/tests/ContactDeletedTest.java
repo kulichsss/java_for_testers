@@ -1,6 +1,7 @@
 package tests;
 
 import model.ContactData;
+import model.GroupData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -67,5 +68,34 @@ public class ContactDeletedTest extends TestBase {
         var expectedList = new ArrayList<>(contactOld);
         expectedList.remove(index);
         Assertions.assertEquals(expectedList, contactNew);
+    }
+
+    @Test
+    public void canDeletedContactFromGroupByHbm() {
+        // Создаём контакт, если нет
+        if (app.hbm().getCountContacts() == 0) {
+            app.hbm().createContact(new ContactData()
+                    .withLastname("Usupov1")
+                    .withName("Danila1")
+                    .withMiddlename("Andreevich")
+                    .withPhoto(randomFile("src/test/resources/images")));
+        }
+        // Создаём группу, если нет
+        if (app.hbm().getCountGroups() == 0) {
+            app.hbm().createGroup(new GroupData("", "Name1", "Logo header", "Comment footer"));
+        }
+        var group = app.hbm().getGroupsList().get(0);
+        // Добавляем контакт в группу, если группа пустая
+        if (app.hbm().getCountContactInGroup(group) == 0) {
+            app.contacts().createContactInGroupByAddTo(group);
+        }
+        var oldRelated = app.hbm().getContactsListInGroup(group);
+        var rnd = new Random();
+        var index = rnd.nextInt(oldRelated.size());
+        app.contacts().deleteContactFromGroup(oldRelated.get(index), group);
+        var newRelated= app.hbm().getContactsListInGroup(group);
+        var expectedList = new ArrayList<>(oldRelated);
+        expectedList.remove(index);
+        Assertions.assertEquals(expectedList, newRelated);
     }
 }

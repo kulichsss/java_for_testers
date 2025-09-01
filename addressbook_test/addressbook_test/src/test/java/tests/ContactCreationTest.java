@@ -106,4 +106,35 @@ public class ContactCreationTest extends TestBase {
     expectedList.sort(compareById);
     Assertions.assertEquals(expectedList, newRelated);
   }
+
+  @Test
+  public void canCreateContactInGroupByAddTo() {
+    // Создаём контакт, если нет
+    if (app.hbm().getCountContacts() == 0) {
+      app.hbm().createContact(new ContactData()
+            .withLastname("Usupov1")
+            .withName("Danila1")
+            .withMiddlename("Andreevich")
+            .withPhoto(randomFile("src/test/resources/images")));
+    }
+    // Создаём группу, если нет
+    if (app.hbm().getCountGroups() == 0) {
+      app.hbm().createGroup(new GroupData("", "Name1", "Logo header", "Comment footer"));
+    }
+    var group = app.hbm().getGroupsList().get(0);
+    var oldRelated = app.hbm().getContactsListInGroup(group);
+    app.contacts().createContactInGroupByAddTo(group);
+    // Получаем контакт, который добавили
+    var contactToAdd = app.hbm().getLastAddContact(group);
+    var newRelated = app.hbm().getContactsListInGroup(group);
+    Comparator<ContactData> compareById = (o1, o2) -> {
+      return Integer.compare(Integer.parseInt(o1.id()), Integer.parseInt(o2.id()));
+    };
+    newRelated.sort(compareById);
+    var expectedList = new ArrayList<>(oldRelated);
+    expectedList.add(contactToAdd);
+    expectedList.sort(compareById);
+    Assertions.assertEquals(expectedList, newRelated);
+
+  }
 }

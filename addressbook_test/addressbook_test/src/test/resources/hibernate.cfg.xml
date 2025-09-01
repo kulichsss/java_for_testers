@@ -16,5 +16,6 @@
         <!-- Твои сущности -->
         <mapping class="manager.hbm.GroupRecord"/>
         <mapping class="manager.hbm.ContactRecord"/>
+        <mapping class="manager.hbm.ContactInGroupRecord"/>
     </session-factory>
 </hibernate-configuration>

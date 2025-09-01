@@ -160,4 +160,50 @@ public class HibernateHelper extends HelperBase {
             session.close();
         }
     }
+
+    public ContactData getLastAddContact(GroupData group) {
+        Session session = sessionFactory.openSession();
+        try {
+            if (group.id() == null || group.id().trim().isEmpty()) {
+                return null;
+            }
+            Integer groupId = Integer.parseInt(group.id());
+
+            // Запрос: найти контакт в группе с максимальным значением created
+            TypedQuery<ContactRecord> query = session.createQuery(
+                    "SELECT cl.contact FROM ContactInGroupRecord cl " +
+                            "WHERE cl.group.id = :groupId " +
+                            "ORDER BY cl.created DESC",
+                    ContactRecord.class
+            );
+            query.setParameter("groupId", groupId);
+            query.setMaxResults(1); // только один результат — самый свежий
+
+            List<ContactRecord> result = query.getResultList();
+            if (result.isEmpty()) {
+                return null;
+            }
+
+            return convert(result.get(0)); // конвертируем ContactRecord → ContactData
+        } catch (NumberFormatException e) {
+            return null;
+        } finally {
+            session.close();
+        }
+    }
+
+    public Long getCountContactInGroup(GroupData group) {
+        Session session = sessionFactory.openSession();
+        try {
+            Integer groupId = Integer.parseInt(group.id());
+            TypedQuery<Long> query = session.createQuery("SELECT COUNT(cl) FROM ContactInGroupRecord cl " +
+                            "WHERE cl.group.id = :groupId",
+                    Long.class
+            );
+            query.setParameter("groupId", groupId);
+            return query.getSingleResult();
+        } finally {
+            session.close();
+        }
+    }
 }
