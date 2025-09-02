@@ -123,7 +123,9 @@ public class ContactCreationTest extends TestBase {
     }
     var group = app.hbm().getGroupsList().get(0);
     var oldRelated = app.hbm().getContactsListInGroup(group);
-    app.contacts().createContactInGroupByAddTo(group);
+    var contactListNotInGroup = app.hbm().findContactNotInGroup(group);
+    var contact = contactListNotInGroup.get(0);
+    app.contacts().createContactInGroupByAddTo(contact, group);
     // Получаем контакт, который добавили
     var contactToAdd = app.hbm().getLastAddContact(group);
     var newRelated = app.hbm().getContactsListInGroup(group);

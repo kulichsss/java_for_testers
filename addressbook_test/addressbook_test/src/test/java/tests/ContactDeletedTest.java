@@ -85,9 +85,11 @@ public class ContactDeletedTest extends TestBase {
             app.hbm().createGroup(new GroupData("", "Name1", "Logo header", "Comment footer"));
         }
         var group = app.hbm().getGroupsList().get(0);
+        var contactListNotInGroup = app.hbm().findContactNotInGroup(group);
+        var contact = contactListNotInGroup.get(0);
         // Добавляем контакт в группу, если группа пустая
         if (app.hbm().getCountContactInGroup(group) == 0) {
-            app.contacts().createContactInGroupByAddTo(group);
+            app.contacts().createContactInGroupByAddTo(contact, group);
         }
         var oldRelated = app.hbm().getContactsListInGroup(group);
         var rnd = new Random();

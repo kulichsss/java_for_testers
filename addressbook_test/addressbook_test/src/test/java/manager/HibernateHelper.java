@@ -39,7 +39,7 @@ public class HibernateHelper extends HelperBase {
 
     public List<GroupData> convertList(List<GroupRecord> records) {
         List<GroupData> result = new ArrayList<>();
-        for (var record: records) {
+        for (var record : records) {
             result.add(new GroupData("" + record.id, record.name, record.header, record.footer));
         }
         return result;
@@ -94,7 +94,7 @@ public class HibernateHelper extends HelperBase {
 
     public List<ContactData> convertContactList(List<ContactRecord> records) {
         List<ContactData> result = new ArrayList<>();
-        for (var record: records) {
+        for (var record : records) {
             result.add(new ContactData("" + record.id, record.firstname, record.middlename, record.lastname, record.photo));
         }
         return result;
@@ -124,23 +124,23 @@ public class HibernateHelper extends HelperBase {
 
 
     public List<ContactData> getContactsListInGroup(GroupData group) {
-            Session session = sessionFactory.openSession();
-            try {
-                if (group.id() == null || group.id().trim().isEmpty()) {
-                    return List.of();
-                }
-                Integer groupId = Integer.parseInt(group.id());
-
-                TypedQuery<ContactRecord> query = session.createQuery(
-                        "SELECT c FROM ContactRecord c JOIN c.groups g WHERE g.id = :groupId",
-                        ContactRecord.class
-                );
-                query.setParameter("groupId", groupId);
-
-                return convertContactList(query.getResultList());
-            } catch (NumberFormatException e) {
+        Session session = sessionFactory.openSession();
+        try {
+            if (group.id() == null || group.id().trim().isEmpty()) {
                 return List.of();
             }
+            Integer groupId = Integer.parseInt(group.id());
+
+            TypedQuery<ContactRecord> query = session.createQuery(
+                    "SELECT c FROM ContactRecord c JOIN c.groups g WHERE g.id = :groupId",
+                    ContactRecord.class
+            );
+            query.setParameter("groupId", groupId);
+
+            return convertContactList(query.getResultList());
+        } catch (NumberFormatException e) {
+            return List.of();
+        }
     }
 
     public void createContact(ContactData contactData) {
@@ -202,6 +202,30 @@ public class HibernateHelper extends HelperBase {
             );
             query.setParameter("groupId", groupId);
             return query.getSingleResult();
+        } finally {
+            session.close();
+        }
+    }
+
+    public List<ContactData> findContactNotInGroup(GroupData group) {
+        Session session = sessionFactory.openSession();
+        try {
+            Integer groupId = Integer.parseInt(group.id());
+
+            TypedQuery<ContactRecord> query = session.createQuery(
+                    "SELECT c FROM ContactRecord c " +
+                            "WHERE c.id NOT IN (" +
+                            "    SELECT cl.contact.id FROM ContactInGroupRecord cl " +
+                            "    WHERE cl.group.id = :groupId" +
+                            ")",
+                    ContactRecord.class
+            );
+            query.setParameter("groupId", groupId);
+
+            List<ContactRecord> records = query.getResultList();
+            return convertContactList(records);
+        } catch (NumberFormatException e) {
+            return List.of();
         } finally {
             session.close();
         }

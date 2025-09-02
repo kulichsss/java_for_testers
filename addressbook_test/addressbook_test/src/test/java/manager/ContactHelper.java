@@ -55,9 +55,9 @@ public class ContactHelper extends HelperBase {
         click(By.linkText("home page"));
     }
 
-    public void createContactInGroupByAddTo(GroupData group) {
+    public void createContactInGroupByAddTo(ContactData contact, GroupData group) {
         openHomePage();
-        click(By.cssSelector("tr[name='entry'] input[name='selected[]']"));
+        click(By.cssSelector(String.format("input[value='%s']", contact.id())));
         click(By.name("to_group"));
         var groups = manager.driver.findElement(By.name("to_group"));
         Select groupSelect = new Select(groups);
