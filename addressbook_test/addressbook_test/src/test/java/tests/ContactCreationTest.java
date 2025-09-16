@@ -123,8 +123,15 @@ public class ContactCreationTest extends TestBase {
     }
     var group = app.hbm().getGroupsList().get(0);
     var oldRelated = app.hbm().getContactsListInGroup(group);
-    var contactListNotInGroup = app.hbm().findContactNotInGroup(group);
-    var contact = contactListNotInGroup.get(0);
+    // Создаем контакт, если все контакты уже в других группах
+    if (app.hbm().findContactNotInGroup(group) == null) {
+      app.hbm().createContact(new ContactData()
+              .withLastname("Usupov1")
+              .withName("Danila1")
+              .withMiddlename("Andreevich")
+              .withPhoto(randomFile("src/test/resources/images")));
+    }
+    var contact = app.hbm().findContactNotInGroup(group).get(0);
     app.contacts().createContactInGroupByAddTo(contact, group);
     // Получаем контакт, который добавили
     var contactToAdd = app.hbm().getLastAddContact(group);

@@ -13,6 +13,9 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static tests.TestBase.randomFile;
 
@@ -54,20 +57,16 @@ public class Generator {
 
     }
 
+    private Object generateData(Supplier<Object> dataSupplier) {
+        return Stream.generate(dataSupplier).limit(count).collect(Collectors.toList());
+    }
+
     private Object generateContacts() {
-        var result = new ArrayList<ContactData>();
-        for (int i = 0; i < count; i++) {
-            result.add(new ContactData("", CommonFunction.randomString(4), "", CommonFunction.randomString(6), ""));
-        }
-        return result;
+        return generateData(() -> new ContactData("", CommonFunction.randomString(4), "", CommonFunction.randomString(6), ""));
     }
 
     private Object generateGroups() {
-        var result = new ArrayList<GroupData>();
-        for (int i = 0; i < count; i++) {
-            result.add(new GroupData("", CommonFunction.randomString(i * 10), CommonFunction.randomString(i * 10), CommonFunction.randomString(i * 10)));
-        }
-        return result;
+        return generateData(() -> new GroupData("", CommonFunction.randomString(10), CommonFunction.randomString(10), CommonFunction.randomString(10)));
     }
 
     private void save(Object data) throws IOException {
