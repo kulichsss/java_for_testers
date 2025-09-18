@@ -6,12 +6,12 @@
 <hibernate-configuration>
     <session-factory>
         <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
-        <property name="hibernate.connection.url">jdbc:mysql://localhost/addressbook</property>
+        <property name="hibernate.connection.url">jdbc:mysql://localhost/addressbook?zeroDateTimeBehavior=CONVERT_TO_NULL</property>
         <property name="hibernate.connection.username">root</property>
         <property name="hibernate.connection.password"></property>
         <property name="hibernate.hbm2ddl.auto">update</property>
         <property name="hibernate.show_sql">true</property>
-        <property name="hibernate.hbm2ddl.auto">validate</property>
+<!--        <property name="hibernate.hbm2ddl.auto">validate</property>-->
 
         <!-- Твои сущности -->
         <mapping class="manager.hbm.GroupRecord"/>

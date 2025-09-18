@@ -121,7 +121,7 @@ public class ContactCreationTest extends TestBase {
     var oldRelated = app.hbm().getContactsListInGroup(group);
     // Создаем контакт, если все контакты уже в других группах
     if (app.hbm().findContactNotInGroup(group).isEmpty()) {
-      app.hbm().createContact(new ContactData("", "Usupov1", "Danila1", "Andreevich", randomFile("src/test/resources/images")));
+      app.hbm().createContact(new ContactData("", "Usupov2", "Danila2", "Andreevich", randomFile("src/test/resources/images")));
     }
     var contact = app.hbm().findContactNotInGroup(group).get(0);
     app.contacts().createContactInGroupByAddTo(contact, group);
