@@ -2,6 +2,7 @@ package manager.hbm;
 
 import jakarta.persistence.*;
 
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -23,6 +24,8 @@ public class ContactRecord {
 
     @Column(name = "photo")
     public String photo;
+
+    public Date deprecated = new Date();
 
     public ContactRecord() {
 

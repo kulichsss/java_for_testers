@@ -3,6 +3,7 @@ package manager.hbm;
 import jakarta.persistence.*;
 import model.GroupData;
 
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -21,6 +22,8 @@ public class GroupRecord {
 
     @Column(name = "group_footer")
     public String footer;
+
+    public Date deprecated = new Date();
 
     public GroupRecord() {
     }

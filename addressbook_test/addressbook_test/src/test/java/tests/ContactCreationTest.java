@@ -111,11 +111,7 @@ public class ContactCreationTest extends TestBase {
   public void canCreateContactInGroupByAddTo() {
     // Создаём контакт, если нет
     if (app.hbm().getCountContacts() == 0) {
-      app.hbm().createContact(new ContactData()
-            .withLastname("Usupov1")
-            .withName("Danila1")
-            .withMiddlename("Andreevich")
-            .withPhoto(randomFile("src/test/resources/images")));
+      app.hbm().createContact(new ContactData("", "Usupov1", "Danila1", "Andreevich", randomFile("src/test/resources/images")));
     }
     // Создаём группу, если нет
     if (app.hbm().getCountGroups() == 0) {
@@ -125,11 +121,7 @@ public class ContactCreationTest extends TestBase {
     var oldRelated = app.hbm().getContactsListInGroup(group);
     // Создаем контакт, если все контакты уже в других группах
     if (app.hbm().findContactNotInGroup(group) == null) {
-      app.hbm().createContact(new ContactData()
-              .withLastname("Usupov1")
-              .withName("Danila1")
-              .withMiddlename("Andreevich")
-              .withPhoto(randomFile("src/test/resources/images")));
+      app.hbm().createContact(new ContactData("", "Usupov1", "Danila1", "Andreevich", randomFile("src/test/resources/images")));
     }
     var contact = app.hbm().findContactNotInGroup(group).get(0);
     app.contacts().createContactInGroupByAddTo(contact, group);

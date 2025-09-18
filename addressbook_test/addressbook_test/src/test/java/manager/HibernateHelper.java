@@ -145,9 +145,14 @@ public class HibernateHelper extends HelperBase {
 
     public void createContact(ContactData contactData) {
         sessionFactory.inSession(session -> {
-            session.getTransaction().begin();
-            session.persist(convert(contactData));
-            session.getTransaction().commit();
+            try {
+                session.getTransaction().begin();
+                session.persist(convert(contactData));
+                session.getTransaction().commit();
+            } catch (Exception e) {
+                session.getTransaction().rollback(); // важно откатить транзакцию
+                throw new RuntimeException("Ошибка при создании контакта", e);
+            }
         });
     }
 
