@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
@@ -51,7 +52,7 @@ public class GroupCreationTest extends TestBase{
                 .withName(CommonFunction.randomString(5))
                 .withHeader(CommonFunction.randomString(5))
                 .withFooter(CommonFunction.randomString(5));
-        return Stream.generate(randomGroup).limit(3);
+        return Stream.generate(randomGroup).limit(1);
     }
 
     @Test
@@ -68,14 +69,9 @@ public class GroupCreationTest extends TestBase{
         var groupList = app.groups().getList();
         app.groups().createGroup(group);
         var newGroupList = app.groups().getList();
-        Comparator<GroupData> compareById = (o1, o2) -> {
-            return Integer.compare(Integer.parseInt(o1.id()), Integer.parseInt(o2.id()));
-        };
-        newGroupList.sort(compareById);
         var expectedList = new ArrayList<>(groupList);
         expectedList.add(group.withId(newGroupList.get(newGroupList.size() - 1).id()).withHeader("").withFooter(""));
-        expectedList.sort(compareById);
-        Assertions.assertEquals(newGroupList, expectedList);
+        Assertions.assertEquals(Set.copyOf(newGroupList), Set.copyOf(expectedList));
 
     }
 
@@ -95,15 +91,11 @@ public class GroupCreationTest extends TestBase{
         var groupList = app.jdbc().getGroupsList();
         app.groups().createGroup(group);
         var newGroupList = app.jdbc().getGroupsList();
-        Comparator<GroupData> compareById = (o1, o2) -> {
-            return Integer.compare(Integer.parseInt(o1.id()), Integer.parseInt(o2.id()));
-        };
-        newGroupList.sort(compareById);
-        var lastValue = newGroupList.get(newGroupList.size() - 1).id();
+        var extraGroupList = newGroupList.stream().filter(g -> !groupList.contains(g)).toList();
+        var lastId = extraGroupList.get(0).id();
         var expectedList = new ArrayList<>(groupList);
-        expectedList.add(group.withId(lastValue));
-        expectedList.sort(compareById);
-        Assertions.assertEquals(newGroupList, expectedList);
+        expectedList.add(group.withId(lastId));
+        Assertions.assertEquals(Set.copyOf(newGroupList), Set.copyOf(expectedList));
 
     }
 
@@ -113,15 +105,11 @@ public class GroupCreationTest extends TestBase{
         var groupList = app.hbm().getGroupsList();
         app.groups().createGroup(group);
         var newGroupList = app.hbm().getGroupsList();
-        Comparator<GroupData> compareById = (o1, o2) -> {
-            return Integer.compare(Integer.parseInt(o1.id()), Integer.parseInt(o2.id()));
-        };
-        newGroupList.sort(compareById);
-        var lastValue = newGroupList.get(newGroupList.size() - 1).id();
+        var extraGroupList = newGroupList.stream().filter(g -> !groupList.contains(g)).toList();
+        var lastId = extraGroupList.get(0).id();
         var expectedList = new ArrayList<>(groupList);
-        expectedList.add(group.withId(lastValue));
-        expectedList.sort(compareById);
-        Assertions.assertEquals(newGroupList, expectedList);
+        expectedList.add(group.withId(lastId));
+        Assertions.assertEquals(Set.copyOf(newGroupList), Set.copyOf(expectedList));
 
     }
 

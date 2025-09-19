@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 
 public class ContactCreationTest extends TestBase {
 
@@ -93,18 +94,13 @@ public class ContactCreationTest extends TestBase {
     var oldRelated = app.hbm().getContactsListInGroup(group);
     app.contacts().createContactInGroup(contact, group);
     var newRelated = app.hbm().getContactsListInGroup(group);
-    Comparator<ContactData> compareById = (o1, o2) -> {
-      return Integer.compare(Integer.parseInt(o1.id()), Integer.parseInt(o2.id()));
-    };
-    newRelated.sort(compareById);
     var expectedList = new ArrayList<>(oldRelated);
     expectedList.add(contact.withId(newRelated.get(newRelated.size() - 1).id())
             .withName(newRelated.get(newRelated.size() - 1).firstname())
             .withMiddlename(newRelated.get(newRelated.size() - 1).middlename())
             .withLastname(newRelated.get(newRelated.size() - 1).lastname())
             .withPhoto(newRelated.get(newRelated.size() - 1).photo()));
-    expectedList.sort(compareById);
-    Assertions.assertEquals(expectedList, newRelated);
+    Assertions.assertEquals(Set.copyOf(expectedList), Set.copyOf(newRelated));
   }
 
   @Test
@@ -128,14 +124,9 @@ public class ContactCreationTest extends TestBase {
     // Получаем контакт, который добавили
     var contactToAdd = app.hbm().getLastAddContact(group);
     var newRelated = app.hbm().getContactsListInGroup(group);
-    Comparator<ContactData> compareById = (o1, o2) -> {
-      return Integer.compare(Integer.parseInt(o1.id()), Integer.parseInt(o2.id()));
-    };
-    newRelated.sort(compareById);
     var expectedList = new ArrayList<>(oldRelated);
     expectedList.add(contactToAdd);
-    expectedList.sort(compareById);
-    Assertions.assertEquals(expectedList, newRelated);
+    Assertions.assertEquals(Set.copyOf(expectedList), Set.copyOf(newRelated));
 
   }
 }
