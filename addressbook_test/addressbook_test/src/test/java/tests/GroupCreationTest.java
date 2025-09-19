@@ -15,6 +15,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 
 public class GroupCreationTest extends TestBase{
@@ -44,10 +46,12 @@ public class GroupCreationTest extends TestBase{
 
     }
 
-    public static List<GroupData> groupJdbcProvider() {
-        var result = new ArrayList<GroupData>(List.of(
-                new GroupData().withName(CommonFunction.randomString(5))));
-        return result;
+    public static Stream<GroupData> groupJdbcProvider() {
+        Supplier<GroupData> randomGroup = () -> new GroupData()
+                .withName(CommonFunction.randomString(5))
+                .withHeader(CommonFunction.randomString(5))
+                .withFooter(CommonFunction.randomString(5));
+        return Stream.generate(randomGroup).limit(3);
     }
 
     @Test

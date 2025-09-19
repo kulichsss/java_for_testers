@@ -13,6 +13,7 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class HibernateHelper extends HelperBase {
     private final SessionFactory sessionFactory;
@@ -38,14 +39,10 @@ public class HibernateHelper extends HelperBase {
     }
 
     public List<GroupData> convertList(List<GroupRecord> records) {
-        List<GroupData> result = new ArrayList<>();
-        for (var record : records) {
-            result.add(new GroupData("" + record.id, record.name, record.header, record.footer));
-        }
-        return result;
+        return records.stream().map(HibernateHelper::convert).collect(Collectors.toList());
     }
 
-    public GroupData convert(GroupRecord record) {
+    public static GroupData convert(GroupRecord record) {
         return new GroupData("" + record.id, record.name, record.header, record.footer);
     }
 
@@ -93,14 +90,11 @@ public class HibernateHelper extends HelperBase {
     }
 
     public List<ContactData> convertContactList(List<ContactRecord> records) {
-        List<ContactData> result = new ArrayList<>();
-        for (var record : records) {
-            result.add(new ContactData("" + record.id, record.firstname, record.middlename, record.lastname, record.photo));
-        }
-        return result;
+        return records.stream().map(HibernateHelper::convert).collect(Collectors.toList());
+
     }
 
-    public ContactData convert(ContactRecord record) {
+    public static ContactData convert(ContactRecord record) {
         return new ContactData("" + record.id, record.firstname, record.middlename, record.lastname, record.photo);
     }
 
