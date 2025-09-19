@@ -11,7 +11,6 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -95,7 +94,7 @@ public class HibernateHelper extends HelperBase {
     }
 
     public static ContactData convert(ContactRecord record) {
-        return new ContactData("" + record.id, record.firstname, record.middlename, record.lastname, record.photo);
+        return new ContactData("" + record.id, record.firstname, record.middlename, record.lastname, record.photo, "", "", "", "");
     }
 
     public ContactRecord convert(ContactData data) {
@@ -103,7 +102,7 @@ public class HibernateHelper extends HelperBase {
         if ("".equals(id)) {
             id = "0";
         }
-        return new ContactRecord(Integer.parseInt(id), data.firstname(), data.middlename(), data.lastname(), data.photo());
+        return new ContactRecord(Integer.parseInt(id), data.firstname(), data.middlename(), data.lastname(), data.photo(), data.home(), data.mobile(), data.work(), data.fax());
     }
 
     public List<ContactData> getContactsList() {

@@ -12,12 +12,9 @@ import model.GroupData;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import static tests.TestBase.randomFile;
 
 public class Generator {
 
@@ -62,7 +59,7 @@ public class Generator {
     }
 
     private Object generateContacts() {
-        return generateData(() -> new ContactData("", CommonFunction.randomString(4), "", CommonFunction.randomString(6), ""));
+        return generateData(() -> new ContactData("", CommonFunction.randomString(4), "", CommonFunction.randomString(6), "", "", "", "", ""));
     }
 
     private Object generateGroups() {

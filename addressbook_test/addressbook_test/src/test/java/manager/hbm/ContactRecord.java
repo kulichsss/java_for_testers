@@ -25,17 +25,23 @@ public class ContactRecord {
     @Column(name = "photo")
     public String photo;
 
-    //public Date deprecated = new Date();
+    @Column(name = "home")
+    public String home;
+
+    @Column(name = "mobile")
+    public String mobile;
+
+    @Column(name = "work")
+    public String work;
+
+    @Column(name = "fax")
+    public String fax;
+
     public Date created = new Date();
     public Date modified = new Date();
-
-    public String home = "";
-    public String mobile = "";
-    public String work = "";
     public String phone2 = "";
     public String company = "";
     public String title = "";
-    public String fax = "";
     public String email = "";
     public String email2 = "";
     public String email3 = "";
@@ -59,12 +65,16 @@ public class ContactRecord {
 
     }
 
-    public ContactRecord(int id, String firstname, String middlename, String lastname, String photo) {
+    public ContactRecord(int id, String firstname, String middlename, String lastname, String photo, String home, String mobile, String work, String fax) {
         this.id = id;
         this.firstname = firstname;
         this.middlename = middlename;
         this.lastname = lastname;
         this.photo = photo;
+        this.home = home;
+        this.mobile = mobile;
+        this.work = work;
+        this.fax = fax;
     }
 
     @ManyToMany(mappedBy = "contacts")

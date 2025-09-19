@@ -8,6 +8,7 @@ import org.openqa.selenium.support.ui.Select;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class ContactHelper extends HelperBase {
 
@@ -155,5 +156,11 @@ public class ContactHelper extends HelperBase {
         } catch (NoAlertPresentException e) {
             System.out.println("Алерта не было — всё нормально, продолжаем.");
         }
+    }
+
+    public String getPhones(ContactData contact) {
+        openHomePage();
+        return manager.driver.findElement(By.xpath(
+                String.format("//input[@id='%s']/../../td[6]", contact.id()))).getText();
     }
 }

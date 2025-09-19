@@ -10,9 +10,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.xml.sax.XMLReader;
 
-import javax.sql.rowset.spi.XmlReader;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -26,7 +24,7 @@ public class ContactCreationTest extends TestBase {
     var listContacts = new ArrayList<ContactData>();
     for (var name: List.of("", CommonFunction.randomString(4))) {
         for (var lastname: List.of("", CommonFunction.randomString(5))) {
-          listContacts.add(new ContactData("", name, "", lastname, ""));
+          listContacts.add(new ContactData("", name, "", lastname, "", "", "", "", ""));
             }
           }
 
@@ -38,7 +36,7 @@ public class ContactCreationTest extends TestBase {
 
   public static List<ContactData> negativeContact() {
     var listContacts = new ArrayList<ContactData>(List.of(
-            new ContactData("", "Danila1'", "", "", "")
+            new ContactData("", "Danila1'", "", "", "", "", "", "", "")
     ));
     return listContacts;
   }
@@ -107,7 +105,7 @@ public class ContactCreationTest extends TestBase {
   public void canCreateContactInGroupByAddTo() {
     // Создаём контакт, если нет
     if (app.hbm().getCountContacts() == 0) {
-      app.hbm().createContact(new ContactData("", "Usupov1", "Danila1", "Andreevich", randomFile("src/test/resources/images")));
+      app.hbm().createContact(new ContactData("", "Usupov1", "Danila1", "Andreevich", randomFile("src/test/resources/images"), "", "", "", ""));
     }
     // Создаём группу, если нет
     if (app.hbm().getCountGroups() == 0) {
@@ -117,7 +115,7 @@ public class ContactCreationTest extends TestBase {
     var oldRelated = app.hbm().getContactsListInGroup(group);
     // Создаем контакт, если все контакты уже в других группах
     if (app.hbm().findContactNotInGroup(group).isEmpty()) {
-      app.hbm().createContact(new ContactData("", "Usupov2", "Danila2", "Andreevich", randomFile("src/test/resources/images")));
+      app.hbm().createContact(new ContactData("", "Usupov2", "Danila2", "Andreevich", randomFile("src/test/resources/images"), "", "", "", ""));
     }
     var contact = app.hbm().findContactNotInGroup(group).get(0);
     app.contacts().createContactInGroupByAddTo(contact, group);
