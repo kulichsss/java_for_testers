@@ -24,6 +24,7 @@ public class ContactInfoTests extends TestBase {
             );
         }
         var contact = app.hbm().getContactsList().get(0);
+        System.out.println(contact);
         var phone = app.contacts().getPhones(contact);
         var expected = Stream.of(contact.home(), contact.mobile(), contact.work(), contact.fax())
                 .filter(s -> s != null && !"".equals(s))
