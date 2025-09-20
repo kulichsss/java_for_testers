@@ -4,9 +4,11 @@ import model.ContactData;
 import model.GroupData;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoAlertPresentException;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -158,9 +160,20 @@ public class ContactHelper extends HelperBase {
         }
     }
 
-    public String getPhones(ContactData contact) {
+    public String getPhone(ContactData contact) {
         openHomePage();
         return manager.driver.findElement(By.xpath(
                 String.format("//input[@id='%s']/../../td[6]", contact.id()))).getText();
+    }
+
+    public HashMap<String, String> getPhones() {
+        var result = new HashMap<String, String>();
+        var rows = manager.driver.findElements(By.name("entry"));
+        for (WebElement row: rows) {
+            var id = row.findElement(By.tagName("input")).getAttribute("id");
+            var phone = row.findElements(By.tagName("td")).get(5).getText();
+            result.put(id, phone);
+        }
+        return result;
     }
 }

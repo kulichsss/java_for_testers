@@ -80,15 +80,4 @@ public class ContactRecord {
     @ManyToMany(mappedBy = "contacts")
     private List<GroupRecord> groups;
 
-    @Override
-    public String toString() {
-        return "ContactRecord{" +
-                "id=" + id +
-                ", firstname='" + firstname + '\'' +
-                ", home='" + home + '\'' +
-                ", mobile='" + mobile + '\'' +
-                ", work='" + work + '\'' +
-                ", fax='" + fax + '\'' +
-                '}';
-    }
 }
