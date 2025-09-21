@@ -10,9 +10,12 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="mantis_tests.main" />
+    <orderEntry type="library" name="Gradle: org.eclipse.angus:angus-mail:2.1.0-M1" level="project" />
     <orderEntry type="library" name="Gradle: org.junit.jupiter:junit-jupiter:5.10.0" level="project" />
     <orderEntry type="library" name="Gradle: org.seleniumhq.selenium:selenium-java:4.34.0" level="project" />
     <orderEntry type="library" name="Gradle: com.squareup.okhttp3:okhttp-urlconnection:5.1.0" level="project" />
+    <orderEntry type="library" name="Gradle: jakarta.mail:jakarta.mail-api:2.2.0-M1" level="project" />
+    <orderEntry type="library" name="Gradle: jakarta.activation:jakarta.activation-api:2.2.0-M1" level="project" />
     <orderEntry type="library" name="Gradle: org.junit.jupiter:junit-jupiter-params:5.10.0" level="project" />
     <orderEntry type="library" name="Gradle: org.junit.jupiter:junit-jupiter-api:5.10.0" level="project" />
     <orderEntry type="library" name="Gradle: org.seleniumhq.selenium:selenium-devtools-v136:4.34.0" level="project" />
@@ -57,6 +60,7 @@
     <orderEntry type="library" name="Gradle: io.opentelemetry:opentelemetry-sdk-metrics:1.51.0" level="project" />
     <orderEntry type="library" name="Gradle: io.opentelemetry:opentelemetry-sdk-logs:1.51.0" level="project" />
     <orderEntry type="library" name="Gradle: com.squareup.okio:okio-jvm:3.15.0" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.eclipse.angus:angus-activation:2.1.0-M1" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: org.junit.jupiter:junit-jupiter-engine:5.10.0" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: org.junit.platform:junit-platform-engine:1.10.0" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: org.apache.commons:commons-exec:1.5.0" level="project" />
