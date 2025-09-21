@@ -1,5 +1,6 @@
 package ru.stqa.mantis.manger;
 
+import okhttp3.OkHttpClient;
 import org.openqa.selenium.By;
 
 import java.nio.file.Paths;
@@ -7,7 +8,7 @@ import java.nio.file.Paths;
 public class HelperBase {
     protected final ApplicationManager manager;
 
-    public HelperBase (ApplicationManager manager){
+    public HelperBase (ApplicationManager manager) {
         this.manager = manager;
 
     }

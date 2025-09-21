@@ -9,26 +9,27 @@ import java.util.Properties;
 
 public class ApplicationManager {
     private WebDriver driver;
-    private String string;
+    private String client;
     private Properties properties;
     private SessionHelper session;
+    private HttpSessionHelper httpSessionHelper;
 
     public void init(String browser, Properties properties) {
-        this.string = browser;
+        this.client = browser;
         this.properties = properties;
 
     }
 
     public WebDriver driver() {
         if (driver == null) {
-            if ("firefox".equals(string)) {
+            if ("firefox".equals(client)) {
                 driver = new FirefoxDriver();
             }
-            else if ("chrome".equals(string)) {
+            else if ("chrome".equals(client)) {
                 driver = new ChromeDriver();
             }
             else {
-                throw new IllegalArgumentException(String.format("Unknown browser %s", string));
+                throw new IllegalArgumentException(String.format("Unknown browser %s", client));
             }
             Runtime.getRuntime().addShutdownHook(new Thread(driver::quit));
             driver.get(properties.getProperty("web.baseUrl"));
@@ -42,6 +43,17 @@ public class ApplicationManager {
             session = new SessionHelper(this);
         }
         return session;
+    }
+
+    public HttpSessionHelper httpSession() {
+        if (httpSessionHelper == null) {
+            httpSessionHelper = new HttpSessionHelper(this);
+        }
+        return httpSessionHelper;
+    }
+
+    public String property(String name) {
+        return properties.getProperty(name);
     }
 
 
