@@ -92,7 +92,7 @@ public class HibernateHelper extends HelperBase {
     public List<ContactData> convertContactList(List<ContactRecord> records) {
         List<ContactData> result = new ArrayList<>();
         for (var record : records) {
-            result.add(new ContactData("" + record.id, record.firstname, record.middlename, record.lastname, record.photo, record.home, record.mobile, record.work, record.fax));
+            result.add(new ContactData("" + record.id, record.firstname, record.middlename, record.lastname, record.photo, record.home, record.mobile, record.work, record.fax, record.address, record.email, record.email2, record.email3));
         }
         return result;
 //        return records.stream().map(HibernateHelper::convert).collect(Collectors.toList());
@@ -100,7 +100,7 @@ public class HibernateHelper extends HelperBase {
     }
 
     public static ContactData convert(ContactRecord record) {
-        return new ContactData("" + record.id, record.firstname, record.middlename, record.lastname, record.photo, "", "", "", "");
+        return new ContactData("" + record.id, record.firstname, record.middlename, record.lastname, record.photo, record.home, record.mobile, record.work, record.fax, record.address, record.email, record.email2, record.email3);
     }
 
     public ContactRecord convert(ContactData data) {

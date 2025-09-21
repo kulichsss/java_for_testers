@@ -59,7 +59,7 @@ public class Generator {
     }
 
     private Object generateContacts() {
-        return generateData(() -> new ContactData("", CommonFunction.randomString(4), "", CommonFunction.randomString(6), "", "", "", "", ""));
+        return generateData(() -> new ContactData("", CommonFunction.randomString(4), "", CommonFunction.randomString(6), "", "", "", "", "", "", "", "", ""));
     }
 
     private Object generateGroups() {
