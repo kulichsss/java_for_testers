@@ -13,6 +13,8 @@ public class HelperBase {
 
     }
 
+
+
     protected void click(By locator) {
         manager.driver().findElement(locator).click();
     }
