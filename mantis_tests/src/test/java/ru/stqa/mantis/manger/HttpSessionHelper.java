@@ -142,14 +142,8 @@ public class HttpSessionHelper extends HelperBase {
     }
 
     public void confirmRegistration(String realname, String password, String password_confirm, String url) {
-        RequestBody formBody = new FormBody.Builder()
-                .add("realname", realname)
-                .add("password", password)
-                .add("password_confirm", password_confirm)
-                .build();
         Request request = new Request.Builder()
                 .url(url)
-                .post(formBody)
                 .build();
         try (Response response = httpClient.newCall(request).execute()) {
             if (!response.isSuccessful()) {

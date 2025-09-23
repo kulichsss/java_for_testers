@@ -9,4 +9,9 @@ public class JamesTests extends TestBase {
     public void canCreateUser() {
         app.jamesCli().addUser(String.format("%s@localhost", CommonFunction.randomString(7)),"password");
     }
+
+    @Test
+    public void canCreateDefiniteUser() {
+        app.jamesCli().addUser("user8@localhost","password");
+    }
 }
