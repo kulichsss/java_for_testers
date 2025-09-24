@@ -2,7 +2,7 @@
   <library name="Gradle: io.opentelemetry:opentelemetry-sdk-metrics:1.51.0" type="java-imported" external-system-id="GRADLE">
     <properties groupId="io.opentelemetry" artifactId="opentelemetry-sdk-metrics" version="1.51.0" baseVersion="1.51.0" />
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/.gradle/caches/modules-2/files-2.1/io.opentelemetry/opentelemetry-sdk-metrics/1.51.0/769cf069a94fa2eac393441efff3fb4408a4327b/opentelemetry-sdk-metrics-1.51.0.jar!/" />
+      <root url="jar://C:/tools/.gradle/caches/modules-2/files-2.1/io.opentelemetry/opentelemetry-sdk-metrics/1.51.0/769cf069a94fa2eac393441efff3fb4408a4327b/opentelemetry-sdk-metrics-1.51.0.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

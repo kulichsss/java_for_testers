@@ -2,7 +2,7 @@
   <library name="Gradle: com.squareup.okhttp3:okhttp-java-net-cookiejar:5.1.0" type="java-imported" external-system-id="GRADLE">
     <properties groupId="com.squareup.okhttp3" artifactId="okhttp-java-net-cookiejar" version="5.1.0" baseVersion="5.1.0" />
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp3/okhttp-java-net-cookiejar/5.1.0/bbc48518ed8c7cccff5bced10bb634b4e6719090/okhttp-java-net-cookiejar-5.1.0.jar!/" />
+      <root url="jar://C:/tools/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp3/okhttp-java-net-cookiejar/5.1.0/bbc48518ed8c7cccff5bced10bb634b4e6719090/okhttp-java-net-cookiejar-5.1.0.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

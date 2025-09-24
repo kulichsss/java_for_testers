@@ -2,7 +2,7 @@
   <library name="Gradle: org.seleniumhq.selenium:selenium-edge-driver:4.34.0" type="java-imported" external-system-id="GRADLE">
     <properties groupId="org.seleniumhq.selenium" artifactId="selenium-edge-driver" version="4.34.0" baseVersion="4.34.0" />
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/.gradle/caches/modules-2/files-2.1/org.seleniumhq.selenium/selenium-edge-driver/4.34.0/a6e8ddff1d235c1cd6155a6bd579e1ab3e2b84f5/selenium-edge-driver-4.34.0.jar!/" />
+      <root url="jar://C:/tools/.gradle/caches/modules-2/files-2.1/org.seleniumhq.selenium/selenium-edge-driver/4.34.0/a6e8ddff1d235c1cd6155a6bd579e1ab3e2b84f5/selenium-edge-driver-4.34.0.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
