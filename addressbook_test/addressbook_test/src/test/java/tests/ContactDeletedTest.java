@@ -16,8 +16,9 @@ public class ContactDeletedTest extends TestBase {
         if (app.contacts().countContacts() == 0) {
             app.contacts().createContact(new ContactData().withRequiredFields("Danila1", "Usupov1", "Andreevich"));
         }
+        var contact = app.hbm().getContactsList().get(0);
         var contactStart = app.contacts().countContacts();
-        app.contacts().deletedContact(null);
+        app.contacts().deletedContact(contact);
         var contactFinish = app.contacts().countContacts();
         Assertions.assertEquals(contactStart - 1, contactFinish);
     }

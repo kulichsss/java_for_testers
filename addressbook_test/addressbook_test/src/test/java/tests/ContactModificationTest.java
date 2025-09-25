@@ -15,11 +15,11 @@ public class ContactModificationTest extends TestBase {
     @Test
     public void canModifyContact() {
         if (app.contacts().countContacts() == 0) {
-            app.contacts().createContact(new ContactData()
+            app.contacts().createContact(new ContactData().withId("")
                     .withLastname("Usupov1")
                     .withName("Danila1")
                     .withMiddlename("")
-                    .withPhoto(""));
+                    );
         }
         var contactOld = app.contacts().getList();
         var rnd = new Random();
@@ -39,12 +39,13 @@ public class ContactModificationTest extends TestBase {
 
     @Test
     public void canModifyContactByHbm() {
-        if (app.hbm().getCountGroups() == 0) {
+        if (app.hbm().getCountContacts() == 0) {
             app.hbm().createContact(new ContactData()
+                    .withId("")
                     .withLastname("Usupov1")
                     .withName("Danila1")
                     .withMiddlename("Andreevich")
-                    .withPhoto(randomFile("src/test/resources/images")));
+            );
         }
         var contactOld = app.hbm().getContactsList();
         var rnd = new Random();

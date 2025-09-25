@@ -1,5 +1,6 @@
 package manager;
 
+import io.qameta.allure.Step;
 import model.GroupData;
 import org.openqa.selenium.By;
 
@@ -35,12 +36,15 @@ public class GroupHelper  extends HelperBase {
 
 
     //Удаление групп
+    @Step
     public void deleteGroup(GroupData group) {
         openGroupPage();
         click(By.cssSelector(String.format("input[value='%s']", group.id())));
         click(By.name("delete"));
         click(By.linkText("group page"));
     }
+
+
     public void deletedAllGroups() {
         openGroupPage();
         selectAllGroups();

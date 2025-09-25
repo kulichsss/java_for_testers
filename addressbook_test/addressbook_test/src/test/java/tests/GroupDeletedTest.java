@@ -1,5 +1,6 @@
 package tests;
 
+import io.qameta.allure.Allure;
 import model.GroupData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -16,8 +17,9 @@ public class GroupDeletedTest extends TestBase {
         if (app.groups().countGroups() == 0) {
             app.groups().createGroup(new GroupData("", "Name1", "Logo header", "Comment footer"));
         }
+        var group = app.hbm().getGroupsList().get(0);
         var groupStart = app.groups().countGroups();
-        app.groups().deleteGroup(null);
+        app.groups().deleteGroup(group);
         Assertions.assertEquals(groupStart - 1, app.groups().countGroups());
     }
 
@@ -33,10 +35,12 @@ public class GroupDeletedTest extends TestBase {
 
     @Test
     public void canDeletedGroupByList() {
+        Allure.step("Checking precondition", step -> {
+            if (app.hbm().getCountGroups() == 0) {
+                app.hbm().createGroup(new GroupData("", "Name1", "Logo header", "Comment footer"));
+            }
+        });
 
-        if (app.hbm().getCountGroups() == 0) {
-            app.hbm().createGroup(new GroupData("", "Name1", "Logo header", "Comment footer"));
-        }
         var groupDataList = app.hbm().getGroupsList();
         var rnd = new Random();
         var index = rnd.nextInt(groupDataList.size());
@@ -44,7 +48,10 @@ public class GroupDeletedTest extends TestBase {
         var newGroup = app.hbm().getGroupsList();
         var expectedList = new ArrayList<>(groupDataList);
         expectedList.remove(index);
-        Assertions.assertEquals(newGroup, expectedList);
+        Allure.step("Validating results", step -> {
+            Assertions.assertEquals(newGroup, expectedList);
+        });
+
     }
 
 }
