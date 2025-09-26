@@ -8,6 +8,7 @@ import org.jsoup.nodes.Element;
 import java.io.IOException;
 import java.net.CookieManager;
 import java.net.CookiePolicy;
+import java.util.ArrayList;
 import java.util.List;
 
 public class HttpSessionHelper extends HelperBase {
@@ -117,9 +118,11 @@ public class HttpSessionHelper extends HelperBase {
         }
     }
 
-    public void accountUpdate(String realname, String password, String password_confirm, String updateToken) {
+    public void accountUpdate(String realname, String password, String password_confirm, String id, String hash, String accountUpdateToken) {
         RequestBody formBody = new FormBody.Builder()
-                .add("account_update_token", updateToken)
+                .add("verify_user_id", id)
+                .add("confirm_hash", hash)
+                .add("account_update_token", accountUpdateToken)
                 .add("realname", realname)
                 .add("password", password)
                 .add("password_confirm", password_confirm)
@@ -141,7 +144,7 @@ public class HttpSessionHelper extends HelperBase {
         }
     }
 
-    public void confirmRegistration(String realname, String password, String password_confirm, String url) {
+    public void confirmRegistration(String url) {
         Request request = new Request.Builder()
                 .url(url)
                 .build();
@@ -149,7 +152,53 @@ public class HttpSessionHelper extends HelperBase {
             if (!response.isSuccessful()) {
                 throw new RuntimeException("Failed to verify account: " + response.code() + " " + response.message());
             }
+            String body = response.body().string();
+            System.out.println("Account updated successfully!");
             System.out.println("📍 Final URL after verify.php: " + response.request().url());
+
+
+        }catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<String> accountUpdateToken(String url) {
+        List<String> tokenList = new ArrayList<>();
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+        try (Response response = httpClient.newCall(request).execute()) {
+            if (!response.isSuccessful()) {
+                throw new RuntimeException("Failed to verify account: " + response.code() + " " + response.message());
+            }
+            String body = response.body().string();
+            String headers = response.headers().toString();
+            System.out.println("Account updated successfully!" + body + "headers " + headers);
+            System.out.println("📍 Final URL after verify.php: " + response.request().url());
+            Document doc = Jsoup.parse(body);  // ← Парсим HTML
+
+            // Находим скрытое поле с именем account_update_token
+            Element updateToken = doc.selectFirst("input[name=account_update_token]");
+            Element userId = doc.selectFirst("input[name=verify_user_id]");
+            Element confirmHash = doc.selectFirst("input[name=confirm_hash]");
+
+            if (updateToken == null || userId == null || confirmHash == null) {
+                throw new RuntimeException("token field not found in HTML");
+            }
+
+            String accountUpdateToken = updateToken.attr("value");  // ← Получаем значение атрибута "value"
+            String id = userId.attr("value");
+            String hash = confirmHash.attr("value");
+
+            if (accountUpdateToken == null || accountUpdateToken.trim().isEmpty()) {
+                throw new RuntimeException("account_update_token is empty or null");
+            }
+            tokenList.add(id);
+            tokenList.add(hash);
+            tokenList.add(accountUpdateToken);
+
+            return tokenList;
+
 
         }catch (IOException e) {
             throw new RuntimeException(e);

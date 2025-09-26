@@ -38,4 +38,18 @@ public class UserRegistrationTests extends TestBase {
         app.httpSession().login(username, "password"); // проверяем, что пользователь может залогиниться (HttpSessionHelper)
         Assertions.assertTrue(app.httpSession().isLoggedIn());
     }
+
+    @Test
+    public void canRegisterUserByHttpSession() {
+        var username = CommonFunction.randomString(7);
+        var tokenRegistration = app.httpSession().getSignupToken();
+        app.jamesCli().addUser(String.format("%s@localhost", username),"password");// создать пользователя на почтовом сервере (JamesHelper)
+        app.httpSession().registration(String.format("%s@localhost", username), username, tokenRegistration);// заполнить форму создания и отправить ее (браузер)
+        var registerUrl = app.mail().exctractUrl(username, "password");// Извлекаем ссылку из письма
+        var accountUpdateToken = app.httpSession().accountUpdateToken(registerUrl);
+        app.httpSession().accountUpdate(username, "password", "password", accountUpdateToken.get(0), accountUpdateToken.get(1), accountUpdateToken.get(2));
+//        app.registration().completedRegistration(username, "password", "password", registerUrl); //Проходим по ссылке и завершаем регистрацию (браузер)
+        app.httpSession().login(username, "password"); // проверяем, что пользователь может залогиниться (HttpSessionHelper)
+        Assertions.assertTrue(app.httpSession().isLoggedIn());
+    }
 }
